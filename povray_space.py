@@ -3,6 +3,7 @@ from vapory import Texture, Pigment
 from vapory import Scene, Camera, LightSource
 from moviepy.editor import VideoClip
 from math import sin, cos, pi, sqrt
+from datetime import datetime
 
 
 class Planet:
@@ -24,8 +25,8 @@ class Planet:
 
     def assemble(self, time):
         angle = pi * time / self.circulation_period
-        return Sphere([self.system_center[0] + sin(angle) * self.radius, self.system_center[1],
-                       self.system_center[2] + cos(angle) * self.radius], self.radius, self.texture)
+        return Sphere([self.system_center[0] + sin(angle) * self.star_distance, self.system_center[1],
+                       self.system_center[2] + cos(angle) * self.star_distance], self.radius, self.texture)
 
 
 class Star:
@@ -99,11 +100,11 @@ class SpaceScene:
 
     def make_frame(self, time):
         scene = self.assemble(time)
-        return scene.render(width=300, height=300, antialiasing=0.001)
+        return scene.render(width=600, height=600, antialiasing=0.001)
 
     def make_gif(self, duration=10, filename=None, fps=20):
         if filename is None:
-            filename = 'space.gif'
+            filename = f'space{datetime.now()}.gif'
         else:
             filename = filename.split('.')[0] + '.gif'
         VideoClip(self.make_frame, duration=duration).write_gif(filename, fps)
