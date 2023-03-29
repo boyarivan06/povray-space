@@ -8,7 +8,8 @@ from povray_space import SpaceScene, PlanetSystem, Star, Planet
 scene = SpaceScene()
 solar_system = PlanetSystem()
 earth = Planet()
-mars = Planet(radius=3, star_distance=7, circulation_period=8, planet_system=solar_system, color=[1, 0, 0])
-
+mars = Planet(radius=3, star_distance=10, circulation_period=8, color=[1, 0, 0])
+solar_system.add_planet(earth)
+solar_system.add_planet(mars)
 scene.add_system(solar_system)
-scene.make_gif()
+scene.make_gif(duration=20)

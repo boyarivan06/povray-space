@@ -11,6 +11,7 @@ class Planet:
         if planet_system is None:
             self.system_center = [0, 0, 0]
         else:
+            planet_system.add_planet(self)
             self.system_center = planet_system.center
 
         if color is None:
@@ -80,10 +81,10 @@ class SpaceScene:
         if systems is None:
             systems = []
         if camera is None:
-            camera = Camera('location', [10, 10, 10], 'look_at', [0, 0, 0])
+            camera = Camera('location', [20, 20, 20], 'look_at', [0, 0, 0])
         self.camera = camera
         if lights is None:
-            lights = [LightSource([0, 0, 0], 'color', [1, 1, 1])]
+            lights = [LightSource([20, 20, 20], 'color', [1, 1, 1])]
         self.systems = systems
         self.lights = lights
 
