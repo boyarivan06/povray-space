@@ -77,14 +77,15 @@ class PlanetSystem:
 
 class SpaceScene:
     def __init__(self, camera=None, systems=None, lights=None):
-        if lights is None:
-            lights = [LightSource([0, 0, 0], 'color', [1, 1, 1])]
         if systems is None:
             systems = []
         if camera is None:
             camera = Camera('location', [10, 10, 10], 'look_at', [0, 0, 0])
         self.camera = camera
+        if lights is None:
+            lights = [LightSource([0, 0, 0], 'color', [1, 1, 1])]
         self.systems = systems
+        self.lights = lights
 
     def add_system(self, system):
         self.systems.append(system)
@@ -93,7 +94,7 @@ class SpaceScene:
         objects = []
         for system in self.systems:
             objects += system.assemble(time)
-        return Scene(self.camera, objects)
+        return Scene(self.camera, objects+self.lights)
 
     def make_frame(self, time):
         scene = self.assemble(time)
