@@ -38,7 +38,7 @@ class Star:
         else:
             self.system_center = planet_system.center
         if color is None:
-            self.texture = Texture(Pigment('color', [1, 1, 1, .8]))
+            self.texture = Texture(Pigment('color', [1, 1, 0, .0]))
         else:
             self.texture = Texture(Pigment('color', color))
         self.radius = radius
@@ -86,10 +86,10 @@ class SpaceScene:
         if systems is None:
             systems = []
         if camera is None:
-            camera = Camera('location', [50, 25, 50], 'look_at', [0, 0, 0])
+            camera = Camera('location', [100, 50, 100], 'look_at', [0, 0, 0])  # 50, 25, 50
         self.camera = camera
         if lights is None:
-            lights = []  # [LightSource([20, 20, 20], 'color', [1, 1, 1])]
+            lights = [LightSource([100, 50, 100], 'color', [1, 1, 1])]
         self.systems = systems
         self.lights = lights
 
@@ -121,7 +121,7 @@ class SpaceScene:
     def show(self, width=500, height=500):
         pyray.init_window(width, height, 'space')
         while not pyray.window_should_close():
-            self.make_png(datetime.now().timestamp())
+            self.make_png(datetime.now().timestamp(), width, height)
             bcg = pyray.load_image('space.png')
             bcg_texture = pyray.load_texture_from_image(bcg)
             pyray.unload_image(bcg)
