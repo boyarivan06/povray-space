@@ -7,7 +7,7 @@ from povray_space import SpaceScene, PlanetSystem, Star, Planet
 
 scene = SpaceScene()
 solar_system = PlanetSystem()
-other_system = PlanetSystem([30, 5, 30], 10)
+other_system = PlanetSystem([20, 5, 20], 10)
 trantor = Planet(color=[0, 1, 0])
 other_system.add_planet(trantor)
 earth = Planet()
