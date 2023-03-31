@@ -6,79 +6,8 @@ from math import sin, cos, pi, sqrt
 from datetime import datetime
 import pyray
 from raylib import colors
-
-
-class Planet:
-    def __init__(self, radius=2, star_distance=6, color=None, planet_system=None, circulation_period=10):
-
-        if planet_system is None:
-            self.system_center = [0, 0, 0]
-        else:
-            planet_system.add_planet(self)
-            self.system_center = planet_system.center
-
-        if color is None:
-            self.texture = Texture(Pigment('color', [1, 1, 1]))
-        else:
-            self.texture = Texture(Pigment('color', color))
-        self.radius = radius
-        self.star_distance = star_distance
-        self.circulation_period = circulation_period
-
-    def assemble(self, time):
-        angle = pi * time / self.circulation_period
-        return Sphere([self.system_center[0] + sin(angle) * self.star_distance, self.system_center[1],
-                       self.system_center[2] + cos(angle) * self.star_distance], self.radius, self.texture)
-
-
-class Star:
-    def __init__(self, radius=3, color=None, planet_system=None):
-        if planet_system is None:
-            self.system_center = [0, 0, 0]
-        else:
-            self.system_center = planet_system.center
-        if color is None:
-            self.texture = Texture(Pigment('color', [1, 1, 0, .0]))
-        else:
-            self.texture = Texture(Pigment('color', color))
-        self.radius = radius
-
-    def assemble(self):
-        return Sphere(self.system_center, self.radius, self.texture)
-
-
-class PlanetSystem:
-    def __init__(self, rotation_center=None, rotation_center_distance=0,
-                 star=None, planets=None, circulation_period=100, angle=0):
-        if rotation_center is None:
-            rotation_center = [0, 0, 0]
-        self.rotation_center = rotation_center
-        self.circulation_period = circulation_period
-        self.rotation_center_distance = rotation_center_distance
-
-        self.center = [self.rotation_center[0] + sin(angle) * self.rotation_center_distance, self.rotation_center[1],
-                       self.rotation_center[2] + cos(angle) * self.rotation_center_distance]
-        if star is None:
-            star = Star(planet_system=self)
-        self.star = star
-        if planets is None:
-            planets = []
-        else:
-            for n, planet in enumerate(planets):
-                planets[n].system_center = self.center
-        self.planets = planets
-
-    def assemble(self, time):
-        angle = pi * time / self.circulation_period
-        self.center = [self.rotation_center[0] + sin(angle) * self.rotation_center_distance, self.rotation_center[1],
-                       self.rotation_center[2] + cos(angle) * self.rotation_center_distance]
-        result = [self.star.assemble(), LightSource(self.center, 'color', [1, 1, 1])] + \
-                 [planet.assemble(time) for planet in self.planets]
-        return result
-
-    def add_planet(self, planet):
-        self.planets.append(planet)
-        planet.system_center = self.center
+from planet_system import PlanetSystem
+from space_objects import Planet, Star
 
 
 class SpaceScene:
@@ -88,7 +17,7 @@ class SpaceScene:
         if camera is None:
             camera = Camera('location', [100, 50, 100], 'look_at', [0, 0, 0])  # 50, 25, 50
         self.camera = camera
-        if lights is None:
+        if lights is None and camera is not None:
             lights = [LightSource([100, 50, 100], 'color', [1, 1, 1])]
         self.systems = systems
         self.lights = lights
